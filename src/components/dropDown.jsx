@@ -4,20 +4,21 @@ import React from "react";
 
 
 
-const DropdownSelection = (options) =>{
+const DropdownSelection = ({placeHolder, options, handleTypeSelect}) =>{
 
     return(
 
         <div className="dropdown">
-        <button className="dropbtn">Dropdown</button>
-        <div className="dropdown-content">
-            {options && options.length > 0 ? (
-                options.map((option, index) =>{
-                    <div key={index}>"hello"</div>
-                })
-            ):(null) }
-         
-        </div>
+            <button className="dropbtn">{placeHolder}</button>
+            <div className="dropdown-content">
+                {options && options.length > 0  ? (
+                    options.map((option, index) =>(
+                        <div onClick={handleTypeSelect} key={index}>{option}</div>
+                       
+                    ))
+                ):(<div>"hello"</div>) }
+            
+            </div>
     </div>
 
     );

@@ -14,7 +14,7 @@ function App() {
   const [city, setCity] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [filteredResults, setFilteredResult] = useState([])
-
+  const [typeSelectOptions, setTypeSelectOptions] = useState([])
 
   useEffect(() =>{
     const fetchData = async() =>{
@@ -23,7 +23,7 @@ function App() {
         const data = await response.json();
         let numOfTotal = data.length;
         let type = [];
-            let city = [];
+        let city = [];
         setList(data);
         setTotal(numOfTotal);
         data.forEach(element => {
@@ -36,10 +36,16 @@ function App() {
             city.push(element.city)
           }
 
-          setCity(city);
-          setType(type);
-
+        
+       
         });
+
+
+        setCity(city);
+        setType(type);
+        type.unshift("All")
+        setTypeSelectOptions(type);
+
 
     };
 
@@ -56,8 +62,21 @@ function App() {
 
        setFilteredResult(filterData);
      }
-
      
+  }
+
+
+  const handleTypeSelect = (event) =>{
+        let selected = event.target.innerHTML
+ 
+        const filterData = list.filter(item => item.brewery_type.toLowerCase() == selected.toLowerCase());
+
+        setFilteredResult(filterData);
+
+       
+
+       
+      
   }
   
 
@@ -78,7 +97,7 @@ function App() {
           onChange={(input) => searchItems(input.target.value)}
         />
 
-        <DropdownSelection options={{test:"test"}}/>
+        <DropdownSelection placeHolder="Select a type" options={typeSelectOptions} handleTypeSelect={handleTypeSelect}/>
 
       </div>
        

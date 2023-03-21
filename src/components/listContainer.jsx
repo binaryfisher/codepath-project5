@@ -13,7 +13,7 @@ const ListContainer = ({list, filteredResult, searchInput}) =>{
                 </div>
               
              
-               { searchInput.length <= 0 && list && list.length > 0 ? (
+               { filteredResult.length <= 0 && list && list.length > 0 ? (
                     list.map((item,index) =>(
                         <div key={index} className="attribute-row">
                             <div>{item.id}</div>
