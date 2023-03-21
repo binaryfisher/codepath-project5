@@ -2,7 +2,10 @@ import { useEffect, useState } from 'react'
 import AttributeCard from './components/attributeCard'
 import ListContainer from './components/listContainer'
 import {Input} from "semantic-ui-react";
+import DropdownSelection from './components/dropDown';
 import './App.css'
+
+
 
 function App() {
   const [list, setList] = useState(null)
@@ -12,39 +15,45 @@ function App() {
   const [searchInput, setSearchInput] = useState("");
   const [filteredResults, setFilteredResult] = useState([])
 
-  useEffect( () =>{
-    let query = "https://api.openbrewerydb.org/breweries?page=1"
 
-    fetch(query).then((response) => response.json()).then((data) => {
-      let numOfTotal = data.length;
-      let type = [];
-      let city = [];
-      setList(data);
-      setTotal(numOfTotal);
-      data.forEach(element => {
-        if(!type.includes(element.brewery_type)){
-           type.push(element.brewery_type);
-        }
+  useEffect(() =>{
+    const fetchData = async() =>{
+        let query = "https://api.openbrewerydb.org/breweries?page=1"
+        const response = await fetch(query);
+        const data = await response.json();
+        let numOfTotal = data.length;
+        let type = [];
+            let city = [];
+        setList(data);
+        setTotal(numOfTotal);
+        data.forEach(element => {
+          if(!type.includes(element.brewery_type)){
+            type.push(element.brewery_type);
+          }
 
-        if(!city.includes(element.city)){
-         
-          city.push(element.city)
-        }
+          if(!city.includes(element.city)){
+          
+            city.push(element.city)
+          }
 
-        setCity(city);
-        setType(type);
+          setCity(city);
+          setType(type);
 
-      });
+        });
 
+    };
 
-    } );
-   
+    fetchData();
+  
   },[]);
+
+  
 
   const searchItems = (inputString) =>{
      setSearchInput(inputString);
      if(inputString !== ""){
-       const filterData = list.filter(item => item.city.toLowerCase() == inputString.trim().toLowerCase() || item.id.toLowerCase() == inputString.trim().toLowerCase() || item.brewery_type.toLowerCase() == inputString.trim().toLowerCase() ||item.postal_code.toLowerCase() == inputString.trim().toLowerCase())
+      const filterData = list.filter(item => item.id.toLowerCase().startsWith(inputString.trim().toLowerCase()))
+
        setFilteredResult(filterData);
      }
 
@@ -68,6 +77,8 @@ function App() {
           placeholder="Search..."
           onChange={(input) => searchItems(input.target.value)}
         />
+
+        <DropdownSelection options={{test:"test"}}/>
 
       </div>
        

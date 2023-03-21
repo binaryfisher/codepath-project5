@@ -38,16 +38,6 @@ const ListContainer = ({list, filteredResult, searchInput}) =>{
                      
                      )}                 
                   
-
-                
-               
-
-            
-
-           
-
-            
-
            
          
 
