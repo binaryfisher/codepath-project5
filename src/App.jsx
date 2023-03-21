@@ -11,19 +11,21 @@ function App() {
   const [list, setList] = useState(null)
   const [total, setTotal] = useState(0);
   const [type, setType] = useState([]);
-  const [city, setCity] = useState([]);
+  const [state, setState] = useState([]);
   const [searchInput, setSearchInput] = useState("");
-  const [filteredResults, setFilteredResult] = useState([])
-  const [typeSelectOptions, setTypeSelectOptions] = useState([])
+  const [filteredResults, setFilteredResult] = useState([]);
+  const [typeSelectOptions, setTypeSelectOptions] = useState([]);
+  const [stateSelectOptions, setStateSelectOptions] = useState([]);
 
   useEffect(() =>{
     const fetchData = async() =>{
-        let query = "https://api.openbrewerydb.org/breweries?page=1"
+        let query = "https://api.openbrewerydb.org/breweries?page=2&per_page=20"
         const response = await fetch(query);
         const data = await response.json();
         let numOfTotal = data.length;
         let type = [];
-        let city = [];
+        let state = [];
+       
         setList(data);
         setTotal(numOfTotal);
         data.forEach(element => {
@@ -31,9 +33,9 @@ function App() {
             type.push(element.brewery_type);
           }
 
-          if(!city.includes(element.city)){
+          if(!state.includes(element.state)){
           
-            city.push(element.city)
+           state.push(element.state)
           }
 
         
@@ -41,10 +43,14 @@ function App() {
         });
 
 
-        setCity(city);
+        setState(state);
         setType(type);
-        type.unshift("All")
-        setTypeSelectOptions(type);
+       let  typeSelections = [...type];
+       let  stateSelections = [...state];
+       typeSelections.unshift("All");
+       stateSelections.unshift("All");
+       setTypeSelectOptions(typeSelections);
+       setStateSelectOptions(stateSelections)
 
 
     };
@@ -68,15 +74,38 @@ function App() {
 
   const handleTypeSelect = (event) =>{
         let selected = event.target.innerHTML
- 
-        const filterData = list.filter(item => item.brewery_type.toLowerCase() == selected.toLowerCase());
+        if(filteredResults.length > 0){
 
-        setFilteredResult(filterData);
+          const filterData = filteredResults.filter(item => item.brewery_type.toLowerCase() == selected.toLowerCase());
+          setFilteredResult(filterData);
 
-       
+        }else{
 
-       
+          const filterData = list.filter(item => item.brewery_type.toLowerCase() == selected.toLowerCase());
+          setFilteredResult(filterData);
+
+        }
+        
+    
       
+  }
+
+  const handleStateSelect = (event) =>{
+
+    let selected = event.target.innerHTML
+    if(filteredResults.length > 0){
+
+      const filterData = filteredResults.filter(item => item.state.toLowerCase() == selected.toLowerCase());
+      setFilteredResult(filterData);
+
+    }else{
+
+      const filterData = list.filter(item => item.state.toLowerCase() == selected.toLowerCase());
+      setFilteredResult(filterData);
+     
+
+    }
+
   }
   
 
@@ -87,17 +116,21 @@ function App() {
       <div className='attributes-panel'>
         <AttributeCard name="Total" value={total} />
         <AttributeCard name="Type" value={type.length} />
-        <AttributeCard name="City" value={city.length} />
+        <AttributeCard name="State" value={state.length} />
       </div>
 
       <div className='filter-panel'>
         <input
           type="text"
-          placeholder="Search..."
+          placeholder="Enter a name..."
           onChange={(input) => searchItems(input.target.value)}
         />
 
-        <DropdownSelection placeHolder="Select a type" options={typeSelectOptions} handleTypeSelect={handleTypeSelect}/>
+        <DropdownSelection placeHolder="Select a type" options={typeSelectOptions} handleSelect={handleTypeSelect}/>
+
+        <DropdownSelection placeHolder="Select a State" options={stateSelectOptions} handleSelect={handleStateSelect}/>
+
+
 
       </div>
        

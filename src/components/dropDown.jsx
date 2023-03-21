@@ -4,7 +4,7 @@ import React from "react";
 
 
 
-const DropdownSelection = ({placeHolder, options, handleTypeSelect}) =>{
+const DropdownSelection = ({placeHolder, options, handleSelect}) =>{
 
     return(
 
@@ -13,7 +13,7 @@ const DropdownSelection = ({placeHolder, options, handleTypeSelect}) =>{
             <div className="dropdown-content">
                 {options && options.length > 0  ? (
                     options.map((option, index) =>(
-                        <div onClick={handleTypeSelect} key={index}>{option}</div>
+                        <div onClick={handleSelect} key={index}>{option}</div>
                        
                     ))
                 ):(<div>"hello"</div>) }

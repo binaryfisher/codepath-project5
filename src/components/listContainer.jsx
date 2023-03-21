@@ -8,8 +8,8 @@ const ListContainer = ({list, filteredResult, searchInput}) =>{
                 <div className="list-header">
                     <div>Name</div>
                     <div>Type</div>
+                    <div>State</div>
                     <div>City</div>
-                    <div>Postal Code</div>
                 </div>
               
              
@@ -18,8 +18,8 @@ const ListContainer = ({list, filteredResult, searchInput}) =>{
                         <div key={index} className="attribute-row">
                             <div>{item.id}</div>
                             <div>{item.brewery_type}</div>
+                            <div>{item.state}</div>
                             <div>{item.city}</div>
-                            <div>{item.postal_code}</div>
                         </div>
                    
                       ))
@@ -28,8 +28,8 @@ const ListContainer = ({list, filteredResult, searchInput}) =>{
                             <div key={index} className="attribute-row">
                                 <div>{item.id}</div>
                                 <div>{item.brewery_type}</div>
+                                <div>{item.state}</div>
                                 <div>{item.city}</div>
-                                <div>{item.postal_code}</div>
                            </div>
                            
                         ))
